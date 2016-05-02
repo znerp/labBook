@@ -1,8 +1,8 @@
 Package: labBook
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Create and maintain R-based html LabBook pages
 Version: 1.1.0
-Author: Who wrote it
+Author: S. H. Wilks
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
 License: What license is it under?
