@@ -1,0 +1,114 @@
+@charset "UTF-8";
+
+body {
+  font-size: 20px;
+  white-space: normal;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  white-space: normal;
+  margin-left: 40px;
+}
+
+ol {
+}
+
+pre {
+  padding-top: 20px;
+}
+
+img {
+  position: relative;
+  display: block;
+  margin: auto;
+  max-width: 100%;
+}
+
+#pres-cover {
+  position: fixed;
+  top: -100;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200%;
+  width: 100%;
+  z-index: 10;
+  background-color: #FFF;
+}
+
+.presentation {
+  margin-left:  40px;
+  margin-right: 40px;
+  width: 1300px;
+}
+
+.pres-page {
+  position: relative;
+  padding-top: 20px;
+  padding-bottom: 1000px;
+  white-space: pre-line;
+  /* cursor: url("images/pointer.png"); */
+  cursor: default;
+}
+
+.pres-index {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  overflow: hidden;
+  background-color: rgba(230, 238, 255, 0.95);
+  padding: 10px;
+  font-size: 12px;
+  z-index: 100;
+}
+
+.pres-index-item {
+  margin-bottom: 10px;
+  margin-right: 10px;
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-left-color: #AAA;
+  padding-left: 6px;
+}
+
+.pres-index-item a {
+  color: #999;
+}
+
+.pres-index-item a:hover {
+  color: blue;
+  text-decoration: none;
+}
+
+a.pres-intex-item-selected {
+  color: #000;
+}
+
+.pres-page h1 {
+  margin-bottom: 0;
+}
+
+.centered {
+  position: relative;
+  display: block;
+  margin: auto;
+}
+
+.block {
+  white-space: normal;
+}
+
+.block-part {
+  display: inline-block;
+  white-space: pre-line;
+  padding: 25px;
+  vertical-align: top;
+}
+
+.block-half {
+  width: 49%;
+}
+
