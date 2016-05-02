@@ -1,0 +1,17 @@
+
+Name: Edit webpage
+Description: Edit the associated webpage in RStudio.
+Binding: edit_webpage
+Interactive: false
+
+
+Name: Open webpage
+Description: Open the associated webpage in the browser.
+Binding: open_webpage
+Interactive: false
+
+
+Name: Update AbLandscapes
+Description: Update the AbLandscapes package from github.
+Binding: update_AbLandscapes
+Interactive: false
