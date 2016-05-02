@@ -12,7 +12,7 @@ var add_index_links = function() {
 }
 
 var build_header = function() {
-  
+
   // Create last modified info
   var last_mod = document.lastModified;
   last_mod = last_mod.replace(/ .*$/, "");
@@ -22,50 +22,40 @@ var build_header = function() {
     id: 'date_created',
     text: mod_text
   }).prependTo('#header');
-  
-  // Create link to online webpage
-  var page_link = document.location.href;
-  page_link = page_link.replace("file:///Users/samwilks/Desktop/LabBook","https://notebooks.antigenic-cartography.org/samwilks");
-  var page_title = $(".main_title").html();
-  $("#header").children("#date_created").prepend("<a href='"+page_link+"'>"+page_title+"</a>, ");
-  
-  // Create home link
-  var home_link = '<div class="home-link"><a href="../index.html">Sam\'s Lab Book</a>, email: sw463@cam.ac.uk</div>';
-  $("#header").prepend(home_link);
-  
+
   // Create link index
   $("#header").append("<ul id='index-links' class='nav nav-pills'></ul>");
-  
+
   link_num = 1;
   add_index_links();
-  
+
   // Create dynamic load slider
   $("#header").append("<img src='../styles/images/checkbox_empty.png' id='dynamic-checkbox' class='dynamic-inactive'/>");
-  
+
   // Set style
   $("#header").css("white-space", "normal");
   $("#header").css("margin-top", "10px");
-    
+
 };
 
 var include_script = function(script_src, script_type) {
-    
+
   var script = document.createElement('script');
   script.src  = script_src;
   script.type = script_type;
   document.getElementsByTagName('head')[0].appendChild(script);
-  
+
 };
 
 var include_css = function(css_src) {
-    
+
   $("head").prepend("<link href='"+css_src+"' rel='stylesheet' type='text/css' />");
-  
+
 };
 
 
 var highlightcode = function() {
-   
+
   $.getScript( "../javascript/highlight_pack.js", function() {
 	  $('head').append('<link rel="stylesheet" href="../javascript/styles/tomorrow-night-blue.css">');
 	  hljs.configure({
@@ -75,11 +65,11 @@ var highlightcode = function() {
           hljs.highlightBlock(block);
       });
   });
- 
+
 };
 
 var load_code = function() {
- 
+
   // Do your whiz bang jQuery stuff here
   $(".code").each(function(){
 	  $(this).children("a").each(function(){
@@ -114,65 +104,65 @@ var load_code = function() {
 		});
 	  });
   });
- 
+
 };
 
 
 var switch_pdfs = function() {
 
 	$("img").each(function(){
-	
+
 	  var img_src   = $(this).attr("src");
 	  var img_ext = img_src.replace(/.*\./,".");
 	  var img_style = $(this).attr("style");
 	  var img_style = img_style.replace(":","=");
 	  var img_style = img_style.replace(";","");
-	  
+
 	  if(img_ext == ".pdf" | img_ext == ".PDF") {
-	    
+
 	  	var canvas_html = "<canvas class='pdfjs' id='"+img_src+"' "+img_style+"></canvas>";
 	  	$(this).replaceWith(canvas_html);
-	  
+
 	  }
-	
+
 	});
 
 };
- 
+
 
 var load_pdfs = function() {
     PDFJS.workerSrc = '../javascript/pdf.worker.js';
 	$(".pdfjs").each(function(){
-	    
+
 	    var canvas_width  = $(this).attr("width");
 	    var canvas_height = $(this).attr("height");
-	    
+
 	    var pdf_loc = $(this).attr("id");
-	    
+
 		PDFJS.getDocument(pdf_loc).then(function(pdf) {
 		  // Using promise to fetch the page
 		  pdf.getPage(1).then(function(page) {
-			
+
 			//
 			// Prepare canvas using PDF page dimensions
 			//
-			
+
 			var canvas = document.getElementById(pdf_loc);
 			var context = canvas.getContext('2d');
-			
+
 			if (typeof canvas_width !== 'undefined') {
 			    canvas_width = canvas_width.replace("px","");
 			    var viewport = page.getViewport(canvas_width / page.getViewport(1.0).width);
 			}
-			
+
 			if (typeof canvas_height !== 'undefined') {
 			    canvas_height = canvas_height.replace("px","");
 			    var viewport = page.getViewport(canvas_height / page.getViewport(1.0).height);
 			}
-			
+
 			canvas.height = viewport.height;
 			canvas.width = viewport.width;
-            
+
 			//
 			// Render PDF page into canvas context
 			//
@@ -183,13 +173,13 @@ var load_pdfs = function() {
 			page.render(renderContext);
 		  });
 		});
-	
+
 	});
 
 };
 
 var dynamically_update_page = function(){
-  
+
   if($("#dynamic-checkbox").hasClass("dynamic-active")) {
 		// Get page url
 		var url = window.location.href;
@@ -203,18 +193,18 @@ var update_parent= function(){
 }
 
 var update_html = function(){
-  
+
   var new_html = $('#new-content').contents().find("html").html();
   var body_content = new_html.match(/\<body\>(.|\n)*\<\/body\>/);
 	var body_content = body_content[0].replace(/((^\<body\>)|(\<\/body\>$))/g,"")
-	
+
 	// Update dynamic class to match current.
 	var dynamic_class = $("#dynamic-checkbox").attr("class");
 	var dynamic_src   = $("#dynamic-checkbox").attr("src");
 	body_content = body_content.replace(/<img.*?dynamic.*?\>/g,
 	                                    "<img src='"+dynamic_src+"' id='dynamic-checkbox' class='"+dynamic_class+"'/>")
-	
-	
+
+
   setTimeout(function(){
     $("body").html(body_content);
     activate_dynamic_option();
@@ -232,7 +222,7 @@ var inIframe = function() {
 
 var dynamic_hover = false;
 var activate_dynamic_option = function(){
-  
+
   $("#dynamic-checkbox").hover(function() {
 	  $(this).attr("src","../styles/images/dynamic_hover.png");
   },
@@ -244,7 +234,7 @@ var activate_dynamic_option = function(){
 	    $(this).attr("src","../styles/images/dynamic.gif");
 	  }
   });
-  
+
   $("#dynamic-checkbox").click(function() {
     $(this).attr("src","../styles/images/dynamic.gif");
 	  if($(this).hasClass("dynamic-inactive")){
@@ -273,17 +263,17 @@ var set_markdown = function(content){
 }
 
 var apply_markdown = function(){
-  
+
   // Apply to general page content
-  $("#page-content").contents().filter(function(){ 
-    return this.nodeType === 3; 
+  $("#page-content").contents().filter(function(){
+    return this.nodeType === 3;
   }).replaceWith(function(){
     var dom_el = $(this)[0];
     var content = dom_el.nodeValue;
     content = set_markdown(content);
     return content;
   });
-  
+
   // Apply also to specific classes
   $(".alert").each(function(){
     var old_html = $(this).html();
@@ -314,7 +304,7 @@ var add_image_time = function(){
 };
 
 var convert_tex = function(){
-  
+
   $("tex").each(function(){
     var domid = $(this)[0];
     var texhtml = domid.outerHTML;
@@ -327,7 +317,7 @@ var convert_tex = function(){
 }
 
 var convert_tags = function(){
-  
+
   $("note").each(function(){
     var domid = $(this)[0];
     var texhtml = domid.outerHTML;
@@ -336,7 +326,7 @@ var convert_tags = function(){
     $(this).before(texhtml);
     $(this).remove();
   })
-  
+
   $("result").each(function(){
     var domid = $(this)[0];
     var texhtml = domid.outerHTML;
@@ -345,7 +335,7 @@ var convert_tags = function(){
     $(this).before(texhtml);
     $(this).remove();
   })
-  
+
   $("idea").each(function(){
     var domid = $(this)[0];
     var texhtml = domid.outerHTML;
@@ -354,7 +344,7 @@ var convert_tags = function(){
     $(this).before(texhtml);
     $(this).remove();
   })
-  
+
 }
 
 
@@ -366,7 +356,7 @@ $( document ).ready(function() {
 	});
 
 	// Load up other javascript files
-	include_script('../javascript/MathJax-master/MathJax.js?config=TeX-AMS-MML_HTMLorMML,LabBook_config', 'text/javascript');
+	//include_script('../javascript/MathJax-master/MathJax.js?config=TeX-AMS-MML_HTMLorMML,LabBook_config', 'text/javascript');
 	include_script('../javascript/pdf.js', 'text/javascript');
 	include_script('../javascript/marked.js', 'text/javascript');
 	include_script('../javascript/bootstrap-3.3.6-dist/js/bootstrap.min.js', 'text/javascript');
@@ -387,7 +377,7 @@ $( document ).ready(function() {
 
 	// Set tex-math divs for tex elements
 	convert_tex();
-	
+
 	// Switch out other tags with proper html
 	convert_tags();
 
@@ -401,7 +391,7 @@ $( document ).ready(function() {
 
 });
 
-$( window ).load(function() { 
+$( window ).load(function() {
 
 	// Apply markdown
 	apply_markdown();
@@ -423,6 +413,6 @@ $( window ).load(function() {
 	if(inIframe()){
 		MathJax.Hub.Queue(update_parent);
 	}
-	
+
 })
 
