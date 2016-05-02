@@ -1,3 +1,4 @@
+
 #' New LabBook page
 #'
 #' Function for creating new LabBook page.
@@ -11,10 +12,10 @@
 #' @export
 #'
 #' @examples
-make.new.page <- function(page.title,
-                          code.file,
-                          project,
-                          open.files = TRUE){
+labBook_newPage <- function(page.title,
+                            code.file,
+                            project,
+                            open.files = TRUE){
 
   if(missing(code.file)){ code.file <- "workspace.R" }
   if(missing(project))  { dir.name  <- gsub("^.*/", "", getwd()) }
