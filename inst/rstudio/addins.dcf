@@ -11,7 +11,13 @@ Binding: open_webpage
 Interactive: false
 
 
-Name: Update AbLandscapes
-Description: Update the AbLandscapes package from github.
-Binding: update_AbLandscapes
+Name: Edit code
+Description: Edit the associated code file in RStudio.
+Binding: edit_code
+Interactive: false
+
+
+Name: New lab book page
+Description: Creat a new lab book page.
+Binding: labBook_newPage
 Interactive: false

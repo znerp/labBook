@@ -23,14 +23,14 @@ var build_header = function() {
     text: mod_text
   }).prependTo('#header');
 
+  // Create link back to index
+  $('#header').prepend("<div id='main-index-link'><a href='../index.html'>Back to index</a></div>|");
+
   // Create link index
   $("#header").append("<ul id='index-links' class='nav nav-pills'></ul>");
 
   link_num = 1;
   add_index_links();
-
-  // Create dynamic load slider
-  $("#header").append("<img src='../styles/images/checkbox_empty.png' id='dynamic-checkbox' class='dynamic-inactive'/>");
 
   // Set style
   $("#header").css("white-space", "normal");
@@ -108,149 +108,6 @@ var load_code = function() {
 };
 
 
-var switch_pdfs = function() {
-
-	$("img").each(function(){
-
-	  var img_src   = $(this).attr("src");
-	  var img_ext = img_src.replace(/.*\./,".");
-	  var img_style = $(this).attr("style");
-	  var img_style = img_style.replace(":","=");
-	  var img_style = img_style.replace(";","");
-
-	  if(img_ext == ".pdf" | img_ext == ".PDF") {
-
-	  	var canvas_html = "<canvas class='pdfjs' id='"+img_src+"' "+img_style+"></canvas>";
-	  	$(this).replaceWith(canvas_html);
-
-	  }
-
-	});
-
-};
-
-
-var load_pdfs = function() {
-    PDFJS.workerSrc = '../javascript/pdf.worker.js';
-	$(".pdfjs").each(function(){
-
-	    var canvas_width  = $(this).attr("width");
-	    var canvas_height = $(this).attr("height");
-
-	    var pdf_loc = $(this).attr("id");
-
-		PDFJS.getDocument(pdf_loc).then(function(pdf) {
-		  // Using promise to fetch the page
-		  pdf.getPage(1).then(function(page) {
-
-			//
-			// Prepare canvas using PDF page dimensions
-			//
-
-			var canvas = document.getElementById(pdf_loc);
-			var context = canvas.getContext('2d');
-
-			if (typeof canvas_width !== 'undefined') {
-			    canvas_width = canvas_width.replace("px","");
-			    var viewport = page.getViewport(canvas_width / page.getViewport(1.0).width);
-			}
-
-			if (typeof canvas_height !== 'undefined') {
-			    canvas_height = canvas_height.replace("px","");
-			    var viewport = page.getViewport(canvas_height / page.getViewport(1.0).height);
-			}
-
-			canvas.height = viewport.height;
-			canvas.width = viewport.width;
-
-			//
-			// Render PDF page into canvas context
-			//
-			var renderContext = {
-			  canvasContext: context,
-			  viewport: viewport
-			};
-			page.render(renderContext);
-		  });
-		});
-
-	});
-
-};
-
-var dynamically_update_page = function(){
-
-  if($("#dynamic-checkbox").hasClass("dynamic-active")) {
-		// Get page url
-		var url = window.location.href;
-		$("body").append("<iframe id='new-content' src='"+url+"' style='display:none'></iframe>");
-  }
-
-};
-
-var update_parent= function(){
-  parent.update_html();
-}
-
-var update_html = function(){
-
-  var new_html = $('#new-content').contents().find("html").html();
-  var body_content = new_html.match(/\<body\>(.|\n)*\<\/body\>/);
-	var body_content = body_content[0].replace(/((^\<body\>)|(\<\/body\>$))/g,"")
-
-	// Update dynamic class to match current.
-	var dynamic_class = $("#dynamic-checkbox").attr("class");
-	var dynamic_src   = $("#dynamic-checkbox").attr("src");
-	body_content = body_content.replace(/<img.*?dynamic.*?\>/g,
-	                                    "<img src='"+dynamic_src+"' id='dynamic-checkbox' class='"+dynamic_class+"'/>")
-
-
-  setTimeout(function(){
-    $("body").html(body_content);
-    activate_dynamic_option();
-    setTimeout(dynamically_update_page,10);
-  },500);
-};
-
-var inIframe = function() {
-    try {
-        return window.self !== window.top;
-    } catch (e) {
-        return true;
-    }
-}
-
-var dynamic_hover = false;
-var activate_dynamic_option = function(){
-
-  $("#dynamic-checkbox").hover(function() {
-	  $(this).attr("src","../styles/images/dynamic_hover.png");
-  },
-	function(){
-	  if($(this).hasClass("dynamic-inactive")){
-	    $(this).attr("src","../styles/images/dynamic_empty.png");
-	  }
-	  else {
-	    $(this).attr("src","../styles/images/dynamic.gif");
-	  }
-  });
-
-  $("#dynamic-checkbox").click(function() {
-    $(this).attr("src","../styles/images/dynamic.gif");
-	  if($(this).hasClass("dynamic-inactive")){
-	    $(this).removeClass("dynamic-inactive");
-	    $(this).addClass("dynamic-active");
-	    dynamically_update_page();
-	  }
-	  else {
-	    $(this).removeClass("dynamic-active");
-	    $(this).addClass("dynamic-inactive");
-	  }
-  });
-
-};
-
-
 var set_markdown = function(content){
   content = content.replace(/\^([^\s]+)\^/g,"<sup>$1</sup>");
   content = content.replace(/.*/g, function markit(x){
@@ -290,18 +147,6 @@ var add_page_wrapper = function(){
   var page_content = $("body").html();
   $("body").html(header_content+"<div id='page-content'>"+page_content+"</div>");
 }
-
-var add_cache_control = function(){
-  $("head").prepend('<meta http-equiv="Cache-control" content="No-Cache">');
-};
-
-var add_image_time = function(){
-  $("img").each(function(){
-      var src = $(this).attr("src");
-      var new_src = src + "?time="+ new Date().getTime();
-      $(this).attr("src", new_src);
-  });
-};
 
 var convert_tex = function(){
 
@@ -350,17 +195,12 @@ var convert_tags = function(){
 
 $( document ).ready(function() {
 
-	// Disable caching of AJAX responses
-	$.ajaxSetup ({
-			cache: false
-	});
-
 	// Load up other javascript files
-	//include_script('../javascript/MathJax-master/MathJax.js?config=TeX-AMS-MML_HTMLorMML,LabBook_config', 'text/javascript');
 	include_script('../javascript/pdf.js', 'text/javascript');
 	include_script('../javascript/marked.js', 'text/javascript');
 	include_script('../javascript/bootstrap-3.3.6-dist/js/bootstrap.min.js', 'text/javascript');
 	include_css('../javascript/bootstrap-3.3.6-dist/css/bootstrap.min.css');
+	include_script('https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML', 'text/javascript');
 
 	// Add page wrapper
 	add_page_wrapper();
@@ -370,10 +210,6 @@ $( document ).ready(function() {
 
 	// Create header
 	build_header();
-
-	// Add cache control meta tag and time to images to allow reloading
-	add_cache_control();
-	add_image_time();
 
 	// Set tex-math divs for tex elements
 	convert_tex();
@@ -385,9 +221,6 @@ $( document ).ready(function() {
 	$('*', $('.tex-math')).each(function () {
 		$(this).addClass("tex-math");
 	});
-
-	// Add event listener for dynamic loading checkbox
-	activate_dynamic_option();
 
 });
 
@@ -401,18 +234,6 @@ $( window ).load(function() {
 
 	// Hack to set padding-top correctly
 	$(".code").css({"padding-top":"20px"});
-
-	if(!navigator.userAgent.match(/safari/i) || navigator.userAgent.match(/chrome/i)) {
-		// Switch out pdfs with canvases
-		switch_pdfs();
-
-		// Load up pdfs with jspdf
-		load_pdfs();
-	}
-
-	if(inIframe()){
-		MathJax.Hub.Queue(update_parent);
-	}
 
 })
 

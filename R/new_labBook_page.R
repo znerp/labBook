@@ -17,6 +17,12 @@ labBook_newPage <- function(page.title,
                             project,
                             open.files = TRUE){
 
+  if(missing(page.title)) {
+    cat("\nPage name:\n\n")
+    page.title <- readline()
+    cat("\n\n\n")
+  }
+
   if(missing(code.file)){ code.file <- "workspace.R" }
   if(missing(project))  { dir.name  <- gsub("^.*/", "", getwd()) }
   else                  { dir.name  <- gsub(" ", "_", project)   }
@@ -29,103 +35,104 @@ labBook_newPage <- function(page.title,
   code.name <- paste0(safe.name, ".R")
 
   ## Check if file exists already.
-  file.overwrite <- T
-  file.present   <- F
-  if(file.exists(paste0("../",dir.name,"/",page.name)) | file.exists(paste0("../",dir.name,"/code/",code.name))) {
-    file.present   <- T
-    file.overwrite <- readline(prompt="Files already exist, overwrite? (T/F) ")
-    file.overwrite <- as.logical(file.overwrite)
+  if(file.exists(paste0("../",dir.name,"/",page.name)) |
+     file.exists(paste0("../",dir.name,"/code/",code.name))) {
+    stop("File already exists")
   }
 
-  if(file.overwrite){
 
-      ## First get the page template. ##
-      page.template <- readChar("../_template_page.html", file.info("../_template_page.html")$size)
+  ## Make HTML file -----------
+  # First get the page template.
+  page.template <- readChar("../templates/_template_page.html", file.info("../templates/_template_page.html")$size)
 
-      ## Replace relevant aspects of the template. ##
-      page.template <- gsub("\\[Title\\]", page.title, page.template)
-      page.template <- gsub("\\[code_name\\]", code.name, page.template)
-      page.template <- gsub("\\[creation_date\\]", Sys.Date(), page.template)
+  # Replace relevant aspects of the template.
+  page.template <- gsub("\\[Title\\]", page.title, page.template)
+  page.template <- gsub("\\[code_name\\]", code.name, page.template)
+  page.template <- gsub("\\[creation_date\\]", Sys.Date(), page.template)
 
-      ## Get the working from the current workspace ##
-      R.code <- readChar(code.file, file.info(code.file)$size)
+  # Write the template page out
+  write(page.template, file = paste0("../",dir.name,"/",page.name))
 
-      ## Write the R code to another file ##
-      write(R.code, file = paste0("../",dir.name,"/code/",code.name))
 
-      ## Write the template page out ##
-      write(page.template, file = paste0("../",dir.name,"/",page.name))
+  ## Make code file -----------
+  # Get the working from the current workspace
+  R.code <- readChar(code.file, file.info(code.file)$size)
 
-      ## Infer dir title ##
-      dir.title <- gsub("_", " ", dir.name)
+  # Write the R code to another file
+  write(R.code, file = paste0("../",dir.name,"/code/",code.name))
 
-      ## Update index page. ##
-      if(!file.present) {
-      index.page <- readChar("../index.html", file.info("../index.html")$size)
 
-      # Define project header.
-      project.header <- paste0("<h3>",toupper(dir.title),"</h3><hr/>")
+  ## Update index page ----------
+  # Infer dir title
+  dir.title <- gsub("_", " ", dir.name)
 
-      # Get the section of html relating to the project.
-      index.page.subset <- gsub(paste0('^.*(',project.header,'.*?)\n<div class="project">.*'),
-                                '\\1',index.page)
+  # Get index page content
+  index.page <- readChar("../index.html", file.info("../index.html")$size)
 
-      # Decide on the subtitle to put the page under.
-      sub.titles <- strsplit(index.page.subset, "<h4>")[[1]]
-      sub.titles <- sub.titles[grepl("</h4>",sub.titles)]
-      sub.titles <- gsub("</h4>.*$","",sub.titles)
+  # Define project header.
+  project.header <- paste0("<h3>",toupper(dir.title),"</h3><hr/>")
 
-      # Offer choice of existing subtitles.
-      print(data.frame(" "=sub.titles))
-      sub.title.choice <- readline("\nSubtitle: ")
+  # Get the section of html relating to the project.
+  index.page.subset <- gsub(pattern     = paste0('^.*(<div class="project">\n',project.header,'.*?</div>).*$'),
+                            replacement = '\\1',
+                            x           = index.page)
 
-      if(sub.title.choice == "") {
-        sub.title <- ""
-      }
-      if(grepl("[:upper:]",sub.title.choice) | grepl("[:lower:]",sub.title.choice)) {
-        sub.title <- as.character(sub.title.choice)
-      }
-      if(!(grepl("[:upper:]",sub.title.choice) | grepl("[:lower:]",sub.title.choice)) & sub.title.choice != "") {
-        sub.title <- sub.titles[as.numeric(sub.title.choice)]
-      }
+  # Decide on the subtitle to put the page under.
+  sub.titles <- strsplit(index.page.subset, "<h4>")[[1]]
+  sub.titles <- sub.titles[grepl("</h4>",sub.titles)]
+  sub.titles <- gsub("</h4>.*$","",sub.titles)
 
-      # If no sub title exists, create it.
-      if (sub.title!="") {
-      if (!grepl(paste0("<h4>",toupper(sub.title),"</h4>"),index.page.subset)) {
-        index.page.subset <- gsub(pattern     = paste0("(",project.header,".*)</div>"),
-                                  replacement = paste0("\\1\n<h4>",toupper(sub.title),"</h4>\n</div>"),
-                                  x           = index.page.subset)
-      }
-      }
+  # Offer choice of existing subtitles.
+  print(data.frame(" "=sub.titles))
+  cat("\n\nSubtitle:\n\n")
+  sub.title.choice <- readline()
 
-      if (sub.title!="") { sub.header <- paste0("<h4>",toupper(sub.title),"</h4>") }
-      else               { sub.header <- project.header }
+  if(sub.title.choice == "") {
+    sub.title <- ""
+  }
+  if(grepl("[:upper:]",sub.title.choice) | grepl("[:lower:]",sub.title.choice)) {
+    sub.title <- as.character(sub.title.choice)
+  }
+  if(!(grepl("[:upper:]",sub.title.choice) | grepl("[:lower:]",sub.title.choice)) & sub.title.choice != "") {
+    sub.title <- sub.titles[as.numeric(sub.title.choice)]
+  }
 
-      # Add page link to index page.
-      index.page.subset <- gsub(pattern     = paste0('(',sub.header,'.*?)(\n\n|\n</div>)'),
-                                replacement = paste0('\\1\n<a href="',dir.name,'/',page.name,'">',page.title,'</a>\\2'),
+  # If no sub title exists, create it.
+  if (sub.title!="") {
+    if (!grepl(paste0("<h4>",toupper(sub.title),"</h4>"),index.page.subset)) {
+      index.page.subset <- gsub(pattern     = paste0("(",project.header,".*?)</div>"),
+                                replacement = paste0("\\1\n<h4>",toupper(sub.title),"</h4>\n</div>"),
                                 x           = index.page.subset)
+    }
+  }
 
-      # Update index page but put the project at the top.
-      project.tag  <- "<!-- PROJECTS //-->"
-      index.page <- gsub(pattern     = paste0('(^.*)\n<div class="project">\n',project.header,'.*?(\n<div class="project">.*)'),
-                         replacement = paste0('\\1\\2'),
-                         x           = index.page)
-      index.page <- gsub(pattern     = project.tag,
-                         replacement = paste0(project.tag,'\n<div class="project">\n',index.page.subset),
-                         x           = index.page)
+  if (sub.title!="") { sub.header <- paste0("<h4>",toupper(sub.title),"</h4>") }
+  else               { sub.header <- project.header }
 
-      # Strip trailing newlines
-      index.page <- gsub("</html>\n*","</html>",index.page)
+  # Add page link to index page.
+  index.page.subset <- gsub(pattern     = paste0('(',sub.header,'.*?)(\n\n|\n</div>)'),
+                            replacement = paste0('\\1\n<a href="',dir.name,'/',page.name,'">',page.title,'</a>\\2'),
+                            x           = index.page.subset)
 
-      write(index.page, file = "../index.html")
-      }
+  # Update index page but put the project at the top.
+  project.tag  <- "<!-- PROJECTS //-->"
+  index.page <- gsub(pattern     = paste0('\n<div class="project">\n',project.header,'.*?</div>'),
+                     replacement = paste0(''),
+                     x           = index.page)
+  index.page <- gsub(pattern     = project.tag,
+                     replacement = paste0(project.tag, '\n', index.page.subset),
+                     x           = index.page)
 
-      ## Open files ready to edit ##
-      if(open.files){
-        file.edit(paste0("../",dir.name,"/code/",code.name))
-        file.edit(paste0("../",dir.name,"/",page.name))
-      }
+  # Strip trailing newlines
+  index.page <- gsub("</html>\n*","</html>",index.page)
+
+  # Write index page
+  write(index.page, file = "../index.html")
+
+  ## Open files ready to edit ##
+  if(open.files){
+    file.edit(paste0("../",dir.name,"/code/",code.name))
+    file.edit(paste0("../",dir.name,"/",page.name))
   }
 
 }

@@ -58,7 +58,7 @@ h1 {
 	font-style: normal;
 	font-weight: lighter;
 }
-h2 { 
+h2 {
 	font-size: 32px;
 	color: #21385B;
 	margin-bottom: -6px;
@@ -67,7 +67,7 @@ h2 {
 	font-weight: lighter;
 }
 
-h2::first-letter { 
+h2::first-letter {
   font-size: 120%;
 	text-transform: uppercase;
 }
@@ -82,7 +82,7 @@ h3 {
 
 h4 {
 	font-weight: bold;
-	margin-top:    30px;	
+	margin-top:    30px;
 }
 
 h5 {
@@ -137,24 +137,16 @@ img{
   display: inline-block;
 }
 
-#dynamic-checkbox {
-  position: absolute;
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  left: 18px;
-  top:13px;
-  cursor: pointer;
-  z-index: 20;
-}
-
 #date_created {
   display: inline-block;
-  position: absolute;
-  margin-right: 20px;
-  right: 0;
-  z-index: 20;
+  padding: 10px;
 }
+
+#main-index-link {
+  display: inline-block;
+  padding: 10px;
+}
+
 
 #index-links {
   position: relative;
@@ -237,8 +229,8 @@ a .hljs-string:hover {
 .landscape-container {
     border-style: solid;
     border-color: #C6D0DC;
-    width:1200px; 
-    height:600px; 
+    width:1200px;
+    height:600px;
     margin-top:40px;
 }
 
@@ -259,8 +251,8 @@ a .hljs-string:hover {
 #lndscp-controls {
   position: fixed;
   padding: 20px;
-  top: 10; 
-  right: 10; 
+  top: 10;
+  right: 10;
   z-index:2;
 }
 
@@ -270,8 +262,8 @@ a .hljs-string:hover {
   border-style: solid;
   border-width: 6px;
   border-color: #E6EEFF;
-  width:  120px; 
-  height: 60px; 
+  width:  120px;
+  height: 60px;
 	border-radius: 10px;
 	background-color: #FFF;
 }

@@ -50,20 +50,6 @@
 	  return(projects_dirs);
 	};
 
-	var add_code_links = function(){
-	  $(".project-section").children(".project").each(function(){
-	    var dir_link = $(this).children("a").attr("href");
-	    dir_link = dir_link.replace(/\/.*$/, "");
-
-	    var code_link_html = '<div class="datacodelinks">' +
-	                         '<a href="'+dir_link+'/data_links.php">Data</a> | ' +
-	                         '<a href="'+dir_link+'/code_links.php">Code</a>' +
-	                         '</div>';
-
-	    $(this).children("hr").after(code_link_html);
-	  });
-	};
-
   var make_sublinks = function(){
     $(".project-section").children(".project").each(function(project_num){
       $(this).children("h3").after('<div class="proj-sublinks-div"></div>');
@@ -78,7 +64,6 @@
   };
 
 	$( document ).ready(function(){
-	  add_code_links();
 	  write_project_list();
 	  label_todos();
 	  add_classes();
