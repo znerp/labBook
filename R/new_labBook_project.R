@@ -9,7 +9,9 @@
 #' @export
 #'
 #' @examples
-labBook_newProject <- function(project.title){
+labBook_newProject <- function(project.title,
+                               project_dir  = "..",
+                               template_dir = "../templates/_template_project"){
 
   ## Work out page name and code name ##
   safe.title <- tolower(project.title)
@@ -17,16 +19,17 @@ labBook_newProject <- function(project.title){
   safe.title <- gsub("/", "_", safe.title)
 
   ## Create project directory
-  dir.create(paste0("../",safe.title))
+  dir.create(file.path(project_dir, safe.title))
 
   ## Copy files from project template
-  lapply(list.files("../_template_project/",full.names = T),
-         file.copy,
-         to = paste0("../",safe.title),
+  lapply(X         = list.files(template_dir, full.names = T),
+         FUN       = file.copy,
+         to        = file.path(project_dir, safe.title),
          recursive = TRUE)
 
-  file.rename(from = paste0("../",safe.title,"/_template_project.Rproj"),
-              to   = paste0("../",safe.title,"/",safe.title,".Rproj"))
+  project_file <- paste0(safe.title,".Rproj")
+  file.rename(from = file.path(project_dir, safe.title, "_template_project.Rproj"),
+              to   = file.path(project_dir, safe.title, project_file))
 
   # Save the command history
   savehistory()
@@ -36,15 +39,16 @@ labBook_newProject <- function(project.title){
 
   # Update the index page
   # If no project section exists, create it.
-  index.page   <- readChar("../index.html", file.info("../index.html")$size)
+  index_path   <- file.path(project_dir, "index.html")
+  index.page   <- readChar(index_path, file.info(index_path)$size)
   project.tag  <- "<!-- PROJECTS //-->"
   project.html <- paste0(project.tag,'\n<div class="project">\n<h3>',toupper(project.title),
                          '</h3><hr/>\n</div>\n')
   index.page   <- gsub(project.tag, project.html, index.page)
-  write(index.page, file = "../index.html")
+  write(index.page, file = index_path)
 
   # Open the new project
-  system2("open", paste0("../",safe.title,"/",safe.title,".Rproj"))
+  system2("open", file.path(project_dir, safe.title, project_file))
 
 }
 

@@ -2,3 +2,4 @@
 
 export(labBook_newPage)
 export(labBook_newProject)
+export(labBook_setup)
