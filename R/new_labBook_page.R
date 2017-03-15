@@ -297,13 +297,3 @@ labBook_makeSafeName <- function(file_name){
 }
 
 
-
-
-unlink("~/Desktop/Nils/LabBook/modelling_b_cells/pages/test.html")
-unlink("~/Desktop/Nils/LabBook/modelling_b_cells/code/test.R")
-
-labBook_newPage(page_name   = "test",
-                code.file   = "~/Desktop/Nils/LabBook/modelling_b_cells/workspace.R",
-                project_dir = "~/Desktop/Nils/LabBook/modelling_b_cells/",
-                open.files  = FALSE,
-                subtitle    = "B CELL MODELS")
