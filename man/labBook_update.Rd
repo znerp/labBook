@@ -12,4 +12,3 @@ labBook_update(labBook_dir)
 \description{
 Function to update lab book with new features and javascript etc.
 }
-

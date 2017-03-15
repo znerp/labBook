@@ -4,12 +4,15 @@
 \alias{labBook_setup}
 \title{Setup LabBook}
 \usage{
-labBook_setup(labBook_name, target_dir, project_name)
+labBook_setup(labBook_name, target_dir, project_name, open_project = TRUE)
 }
 \arguments{
-\item{target_dir}{}
+\item{labBook_name}{Name of your LabBook}
+
+\item{target_dir}{Directory in which to place your labBook}
+
+\item{project_name}{Name of your first project}
 }
 \description{
 Function to initialise a labBook
 }
-

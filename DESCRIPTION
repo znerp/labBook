@@ -1,13 +1,15 @@
 Package: labBook
 Type: Package
 Title: Create and maintain R-based html LabBook pages
-Version: 1.1.0
+Version: 1.1.2
 Author: S. H. Wilks
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
 License: What license is it under?
 LazyData: TRUE
 Depends:
-    devtools
-RoxygenNote: 5.0.1
+    devtools,
+    locfit,
+    boot
+RoxygenNote: 6.0.0
 Suggests: testthat

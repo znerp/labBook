@@ -15,32 +15,58 @@
 #' @export
 #'
 #' @examples
-write.pdf <- function(file, width=7, height=7, html.height=600, add2cp=F, save2cp=T, ...){
-  pdf(file=file, width=width, height=height, ...)
+write.pdf <- function(file=NA, width=7, height=7, html.width=1200, add2cp=F, save2cp=T, ...){
 
-  x.y.aspect <- width/height
-  html.width <- round(html.height*x.y.aspect)
-
-  ## Copy html link to clipboard ##
-  html.output <- ""
-  if(add2cp) { html.output <- readLines(pipe("pbpaste")) }
-  png.name <- gsub("pdf$","png",file)
-  html.output <- c(html.output,paste0("<a href='",file,"'><img src='",png.name,"' style='height:",html.height,"px'/></a>"))
-
-  if(save2cp) {
-    clip <- pipe("pbcopy", "w")
-    writeLines(html.output, clip)
-    close(clip)
+  ## Create temp file if file argument is missing
+  if(is.na(file)) {
+    file_loc   <- tempfile()
+    file_given <- FALSE
+  }
+  else {
+    file_loc   <- file
+    file_given <- TRUE
   }
 
-  pdf.off <<- function(){
-    dev.off()
-    # Escape brackets
-    file <- gsub("\\(","\\\\(",file)
-    file <- gsub("\\)","\\\\)",file)
-    png.name <- gsub("pdf$","png",eval(file))
-    system(paste0('sips -s format png ',eval(file),' --out ',png.name),
-           ignore.stdout = TRUE)
+  ## Open pdf connection
+  pdf(file=file_loc, width=width, height=height, ...)
+
+  if(file_given) {
+    ## Copy html link to clipboard
+    html.output <- ""
+    if(add2cp) {
+      paste_pipe  <- pipe("pbpaste")
+      html.output <- readLines(paste_pipe)
+      close(paste_pipe)
+    }
+    png.name <- gsub("pdf$","png",file_loc)
+    html.output <- c(html.output,paste0("<a href='../",file_loc,"'><img src='../",png.name,"' style='width:",html.width,"px'/></a>"))
+
+    ## Append to clipboard if requested
+    if(save2cp) {
+      clip <- pipe("pbcopy", "w")
+      writeLines(html.output, clip)
+      close(clip)
+    }
+  }
+
+  # Escape brackets
+  file_loc <- gsub("\\(","\\\\(",file_loc)
+  file_loc <- gsub("\\)","\\\\)",file_loc)
+
+  ## Define function for pdf.off
+  if(file_given) {
+    pdf.off <<- function(){
+      dev.off()
+      png.name <- gsub("pdf$","png",eval(file_loc))
+      system(paste0('sips -s format png ',eval(file_loc),' --out ',png.name),
+             ignore.stdout = TRUE)
+    }
+  }
+  else {
+    pdf.off <<- function(){
+      dev.off()
+      system(paste0('open ',eval(file_loc)))
+    }
   }
 }
 

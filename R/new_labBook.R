@@ -3,8 +3,9 @@
 #'
 #' Function to initialise a labBook
 #'
-#' @param labBook_name
-#' @param target_dir
+#' @param labBook_name Name of your LabBook
+#' @param target_dir Directory in which to place your labBook
+#' @param project_name Name of your first project
 #'
 #' @return
 #' @export
@@ -12,7 +13,8 @@
 #' @examples
 labBook_setup <- function(labBook_name,
                           target_dir,
-                          project_name) {
+                          project_name,
+                          open_project = TRUE) {
 
   ## Strip trailing slashes
   target_dir <- gsub("/$", "", target_dir)
@@ -31,7 +33,8 @@ labBook_setup <- function(labBook_name,
   ## Create the first project
   labBook_newProject(project.title = project_name,
                      project_dir   = file.path(target_dir, "LabBook"),
-                     template_dir  = file.path(target_dir, "LabBook/templates/_template_project"))
+                     template_dir  = file.path(target_dir, "LabBook/templates/_template_project"),
+                     open_project  = open_project)
 
 }
 

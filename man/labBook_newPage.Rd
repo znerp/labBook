@@ -4,7 +4,8 @@
 \alias{labBook_newPage}
 \title{New LabBook page}
 \usage{
-labBook_newPage(page.title, code.file, project, open.files = TRUE)
+labBook_newPage(page_name, code.file, project_dir, subtitle,
+  open.files = TRUE)
 }
 \arguments{
 \item{open.files}{}
@@ -12,4 +13,3 @@ labBook_newPage(page.title, code.file, project, open.files = TRUE)
 \description{
 Function for creating new LabBook page.
 }
-

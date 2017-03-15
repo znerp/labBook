@@ -9,4 +9,3 @@ clean.cp()
 \description{
 Function to clear the clipboard.
 }
-

@@ -24,7 +24,7 @@ var build_header = function() {
   }).prependTo('#header');
 
   // Create link back to index
-  $('#header').prepend("<div id='main-index-link'><a href='../index.html'>Back to index</a></div>|");
+  $('#header').prepend("<div id='main-index-link'><a href='../../index.html'>Back to index</a></div>|");
 
   // Create link index
   $("#header").append("<ul id='index-links' class='nav nav-pills'></ul>");
@@ -56,8 +56,8 @@ var include_css = function(css_src) {
 
 var highlightcode = function() {
 
-  $.getScript( "../javascript/highlight_pack.js", function() {
-	  $('head').append('<link rel="stylesheet" href="../javascript/styles/tomorrow-night-blue.css">');
+  $.getScript( "../../javascript/highlight_pack.js", function() {
+	  $('head').append('<link rel="stylesheet" href="../../javascript/styles/tomorrow-night-blue.css">');
 	  hljs.configure({
 	    languages: ['r']
 	  });
@@ -196,10 +196,10 @@ var convert_tags = function(){
 $( document ).ready(function() {
 
 	// Load up other javascript files
-	include_script('../javascript/pdf.js', 'text/javascript');
-	include_script('../javascript/marked.js', 'text/javascript');
-	include_script('../javascript/bootstrap-3.3.6-dist/js/bootstrap.min.js', 'text/javascript');
-	include_css('../javascript/bootstrap-3.3.6-dist/css/bootstrap.min.css');
+	include_script('../../javascript/pdf.js', 'text/javascript');
+	include_script('../../javascript/marked.js', 'text/javascript');
+	include_script('../../javascript/bootstrap-3.3.6-dist/js/bootstrap.min.js', 'text/javascript');
+	include_css('../../javascript/bootstrap-3.3.6-dist/css/bootstrap.min.css');
 	include_script('https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML', 'text/javascript');
 
 	// Add page wrapper

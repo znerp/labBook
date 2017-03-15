@@ -4,8 +4,8 @@
 \alias{write.pdf}
 \title{Write to a pdf file}
 \usage{
-write.pdf(file, width = 7, height = 7, html.height = 600, add2cp = F,
-  save2cp = T, ...)
+write.pdf(file = NA, width = 7, height = 7, html.width = 1200,
+  add2cp = F, save2cp = T, ...)
 }
 \arguments{
 \item{...}{}
@@ -13,4 +13,3 @@ write.pdf(file, width = 7, height = 7, html.height = 600, add2cp = F,
 \description{
 Function to write to a pdf file and also make a png copy of it, copying the link to your clipboard.
 }
-

@@ -4,8 +4,8 @@
 \alias{labBook_newProject}
 \title{New labBook project}
 \usage{
-labBook_newProject(project.title, project_dir = "..",
-  template_dir = "../templates/_template_project")
+labBook_newProject(project.title, project_dir = "..", template_dir,
+  open_project = TRUE)
 }
 \arguments{
 \item{project.title}{}
@@ -13,4 +13,3 @@ labBook_newProject(project.title, project_dir = "..",
 \description{
 Function to setup a new labBook project.
 }
-

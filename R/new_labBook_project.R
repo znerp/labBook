@@ -11,12 +11,21 @@
 #' @examples
 labBook_newProject <- function(project.title,
                                project_dir  = "..",
-                               template_dir = "../templates/_template_project"){
+                               template_dir,
+                               open_project = TRUE){
+
+  # Get standard template if template_dir is missing
+  if(missing(template_dir)) {
+    template_dir <- system.file("LabBook/templates/_template_project", package="labBook")
+  }
 
   ## Work out page name and code name ##
-  safe.title <- tolower(project.title)
-  safe.title <- gsub(" ", "_", safe.title)
-  safe.title <- gsub("/", "_", safe.title)
+  safe.title <- labBook_makeSafeName(project.title)
+
+  ## Stop if project directory already exists
+  if(dir.exists(file.path(project_dir, safe.title))){
+    stop("Project already exists, please remove the existing project first")
+  }
 
   ## Create project directory
   dir.create(file.path(project_dir, safe.title))
@@ -38,17 +47,17 @@ labBook_newProject <- function(project.title,
   save.image()
 
   # Update the index page
-  # If no project section exists, create it.
   index_path   <- file.path(project_dir, "index.html")
-  index.page   <- readChar(index_path, file.info(index_path)$size)
-  project.tag  <- "<!-- PROJECTS //-->"
-  project.html <- paste0(project.tag,'\n<div class="project">\n<h3>',toupper(project.title),
-                         '</h3><hr/>\n</div>\n')
-  index.page   <- gsub(project.tag, project.html, index.page)
-  write(index.page, file = index_path)
+  project_html <- paste0('<div class="project">\n<h3>',toupper(project.title),'</h3><hr/>\n</div>')
+  index_page   <- labBook_getFileContents(index_path)
+  index_page   <- labBook_addProjectSection(index_page   = index_page,
+                                            project_html = project_html)
+  write(index_page, file = index_path)
 
   # Open the new project
-  system2("open", file.path(project_dir, safe.title, project_file))
+  if(open_project) {
+    system2("open", file.path(project_dir, safe.title, project_file))
+  }
 
 }
 
