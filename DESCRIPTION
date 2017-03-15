@@ -1,7 +1,7 @@
 Package: labBook
 Type: Package
 Title: Create and maintain R-based html LabBook pages
-Version: 1.1.2
+Version: 1.1.3
 Author: S. H. Wilks
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
