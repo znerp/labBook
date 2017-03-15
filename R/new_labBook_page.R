@@ -94,11 +94,11 @@ labBook_newPage <- function(page_name,
                                    page_name    = page_name,
                                    subtitle     = subtitle)
 
-  # Strip trailing newlines
+  # Tidy index page
   index_page <- gsub("</html>\n*","</html>",index_page)
 
   # Write index page
-  write(index_page, file = gsub("index", "index2", index_path))
+  write(index_page, file = index_path)
 
   ## Open files ready to edit ##
   if(open.files){
