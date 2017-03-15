@@ -28,3 +28,4 @@ open_webpage <- function(html_path){
   tryCatch(expr = { system2("open", html_path) },
            error = function(e){ system2("start", html_path) })
 }
+
