@@ -130,7 +130,7 @@ labBook_getProjectSection <- function(project_name,
   project_header <- paste0("<h3>",toupper(project_name),"</h3><hr/>")
 
   # Get the section of html relating to the project.
-  project_subset <- gsub(pattern     = paste0('^.*(<div class="project">\n*',project_header,'.*?</div>).*$'),
+  project_subset <- gsub(pattern     = paste0('^.*(<div class="project">[\r|\n]*',project_header,'.*?</div>).*$'),
                          replacement = "\\1",
                          x           = index_page)
 
@@ -164,7 +164,7 @@ labBook_appendLink <- function(index_page,
   }
 
   # Add page link to index page.
-  project_section <- gsub(pattern     = paste0('(',subheader,'.*?)(\n\n|\n</div>)'),
+  project_section <- gsub(pattern     = paste0('(',subheader,'.*?)([\r|\n][\r|\n]|[\r|\n]</div>)'),
                           replacement = paste0('\\1\n<a href="',proj_dir,'/pages/',page_link,'.html">',page_name,'</a>\\2'),
                           x           = project_section)
 
@@ -213,7 +213,7 @@ labBook_replaceProjectSection <- function(index_page,
   project_header <- paste0("<h3>",toupper(project_name),"</h3><hr/>")
 
   # Get the section of html relating to the project.
-  gsub(pattern     = paste0('(^.*)(<div class="project">\n*',project_header,'.*?</div>)(.*$)'),
+  gsub(pattern     = paste0('(^.*)(<div class="project">[\r|\n]*',project_header,'.*?</div>)(.*$)'),
        replacement = paste0('\\1', replacement,'\\3'),
        x           = index_page)
 
@@ -297,3 +297,13 @@ labBook_makeSafeName <- function(file_name){
 }
 
 
+
+
+# unlink("~/Desktop/Nils/LabBook/modelling_b_cells/pages/test.html")
+# unlink("~/Desktop/Nils/LabBook/modelling_b_cells/code/test.R")
+#
+# labBook_newPage(page_name   = "test",
+#                 code.file   = "~/Desktop/Nils/LabBook/modelling_b_cells/workspace.R",
+#                 project_dir = "~/Desktop/Nils/LabBook/modelling_b_cells/",
+#                 open.files  = FALSE,
+#                 subtitle    = "B CELL MODELS")
