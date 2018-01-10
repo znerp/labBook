@@ -31,7 +31,7 @@ labBook_newProject <- function(project.title,
   dir.create(file.path(project_dir, safe.title))
 
   ## Copy files from project template
-  lapply(X         = list.files(template_dir, full.names = T),
+  lapply(X         = list.files(template_dir, full.names = T, include.dirs = T),
          FUN       = file.copy,
          to        = file.path(project_dir, safe.title),
          recursive = TRUE)

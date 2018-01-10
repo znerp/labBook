@@ -1,0 +1,27 @@
+
+```{r}
+# Then you can use the following to install directly from github:
+devtools::install_github("sw463/labBook")
+```
+
+Setup
+-----
+
+```{r}
+# Then you can use the following to install directly from github:
+library(labBook)
+labBook_setup(labBook_name = "Sam's labBook", 
+              target_dir   = "~/Desktop/test",
+              project_name = "My first project",
+              open_project = FALSE)
+```
+
+```{r}
+labBook_newPage(page_name = "My first page",
+                code.file = "~/Desktop/test/LabBook/my_first_project/workspace.R",
+                project_dir = "~/Desktop/test/LabBook/my_first_project/",
+                subtitle = "Subtitle 1",
+                open.files = FALSE)
+```
+
+
