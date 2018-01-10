@@ -1,9 +1,5 @@
 
 
-setwd("~/Desktop/LabBook/adjuvanted_vaccines/")
-
-
-
 labBook_listProjects <- function(index_content){
 
   # Strip stuff before project section
