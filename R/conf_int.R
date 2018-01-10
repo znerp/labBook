@@ -42,21 +42,42 @@ mean_ci <- function(x,
 plot_mean_ci <- function(x,
                          values,
                          conf.level = 0.95,
+                         pch = 16,
+                         bar_width,
+                         min_crop,
                          ...){
 
   # Get confidence interval
   conf_int <- mean_ci(x          = values,
                       conf.level = conf.level)
+  mean_val <- mean(values, na.rm = TRUE)
+
+  # Crop to a minimum point is requested (i.e. nd)
+  if(!missing(min_crop)){
+    conf_int[conf_int < min_crop] <- min_crop
+    mean_val[mean_val < min_crop] <- min_crop
+  }
 
   # Plot confidence interval
   lines(x = c(x,x),
         y = conf_int,
         ...)
 
+  # Plot bars if requested
+  if(!missing(bar_width)){
+    lines(x = c(x-bar_width/2, x+bar_width/2),
+          y = c(conf_int[1], conf_int[1]),
+          ...)
+
+    lines(x = c(x-bar_width/2, x+bar_width/2),
+          y = c(conf_int[2], conf_int[2]),
+          ...)
+  }
+
   # Plot mean point
   points(x = x,
-         y = mean(values, na.rm = TRUE),
-         pch = 16,
+         y = mean_val,
+         pch = pch,
          ...)
 
 }

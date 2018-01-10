@@ -29,6 +29,7 @@ plot_titres <- function(x_data,
                         princomp = FALSE,
                         princomp_col = "red",
                         titre_class_means = FALSE,
+                        log_axes_labels = TRUE,
                         draw_eq_line = TRUE,
                         lm = FALSE,
                         lm_col = "blue",
@@ -51,14 +52,25 @@ plot_titres <- function(x_data,
               ylim = ylim)
 
   # Plot axes
-  if(nd_titres) {
-    axis(1, at = xlim[1]:xlim[2], labels = gsub("-1", "nd", xlim[1]:xlim[2]))
-    axis(2, at = ylim[1]:ylim[2], labels = gsub("-1", "nd", ylim[1]:ylim[2]), las = 2)
+  log_x_axis <- xlim[1]:xlim[2]
+  log_y_axis <- ylim[1]:ylim[2]
+
+  if(log_axes_labels){
+    x_axis_lab <- log_x_axis
+    y_axis_lab <- log_y_axis
   }
   else {
-    axis(1, at = xlim[1]:xlim[2])
-    axis(2, at = ylim[1]:ylim[2], las = 2)
+    x_axis_lab <- 2^log_x_axis*10
+    y_axis_lab <- 2^log_y_axis*10
   }
+
+  if(nd_titres) {
+    x_axis_lab[log_x_axis == -1] <- "nd"
+    y_axis_lab[log_y_axis == -1] <- "nd"
+  }
+
+  axis(1, at = xlim[1]:xlim[2], labels = x_axis_lab)
+  axis(2, at = ylim[1]:ylim[2], labels = y_axis_lab, las = 2)
   box()
 
   # Plot labels

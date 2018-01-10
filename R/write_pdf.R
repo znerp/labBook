@@ -15,7 +15,7 @@
 #' @export
 #'
 #' @examples
-write.pdf <- function(file=NA, width=7, height=7, html.width=1200, add2cp=F, save2cp=T, ...){
+write.pdf <- function(file=NA, width=7, height=7, html.width=800, add2cp=F, save2cp=T, ...){
 
   ## Create temp file if file argument is missing
   if(is.na(file)) {
@@ -58,7 +58,7 @@ write.pdf <- function(file=NA, width=7, height=7, html.width=1200, add2cp=F, sav
     pdf.off <<- function(){
       dev.off()
       png.name <- gsub("pdf$","png",eval(file_loc))
-      system(paste0('sips -s format png ',eval(file_loc),' --out ',png.name),
+      system(paste0('sips -s format png ',eval(file_loc),' --resampleWidth ',html.width*2,' --out ', png.name),
              ignore.stdout = TRUE)
     }
   }

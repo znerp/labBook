@@ -4,7 +4,7 @@
 \alias{write.pdf}
 \title{Write to a pdf file}
 \usage{
-write.pdf(file = NA, width = 7, height = 7, html.width = 1200,
+write.pdf(file = NA, width = 7, height = 7, html.width = 800,
   add2cp = F, save2cp = T, ...)
 }
 \arguments{

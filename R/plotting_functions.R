@@ -119,3 +119,32 @@ layout_pairplot <- function(x,
 
 
 
+
+#' Draw a circle
+#'
+#' @export
+circle <- function(x,
+                   y,
+                   r,
+                   num_segs = 100,
+                   ...) {
+
+  x0 <- x
+  y0 <- y
+
+  angles <- seq(from       = 0,
+                to         = pi,
+                length.out = num_segs)
+
+  xc <- r*cos(angles)
+  yc <- r*sin(angles)
+
+  xl <- c(xc + x0, rev(xc) + x0)
+  yl <- c(yc + y0, -rev(yc) + y0)
+
+  polygon(x = xl,
+          y = yl,
+          ...)
+
+}
+

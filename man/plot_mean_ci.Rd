@@ -4,7 +4,8 @@
 \alias{plot_mean_ci}
 \title{Plot mean point with confidence intervals}
 \usage{
-plot_mean_ci(x, values, conf.level = 0.95, ...)
+plot_mean_ci(x, values, conf.level = 0.95, pch = 16, bar_width, min_crop,
+  ...)
 }
 \arguments{
 \item{...}{}

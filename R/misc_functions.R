@@ -1,3 +1,54 @@
+
+
+#' Start piping console output to the clipboard
+#'
+#' @export
+#'
+start_console2clip <- function(){
+  clip <- pipe("pbcopy", "w")
+  sink(clip)
+}
+
+#' Stop piping console output to the clipboard
+#'
+#' @export
+#'
+stop_console2clip <- function(){
+  sink()
+}
+
+
+#' Format a table as latex
+#'
+#' @param R_table
+#'
+#' @return Returns a character string of the table formatted into latex
+#' @export
+#'
+make_latex_table <- function(R_table){
+
+  num_cols <- ncol(R_table)
+  num_rows <- nrow(R_table)
+
+  # Generate latex output
+  latex_output <- c()
+  latex_output <- paste0(latex_output, "\\begin{tabular}{ ", rep("c ", num_cols),"}\n")
+
+  row_text <- apply(R_table, 1, function(x){
+    paste0("  ", paste(x, collapse = " & "), " \\\\")
+  })
+
+  latex_output <- paste0(latex_output, paste(row_text, collapse = "\n"))
+  latex_output <- paste0(latex_output, "\n\\end{tabular}")
+
+  # Return latex
+  latex_output
+
+}
+
+
+
+
 ## Plot confidence intervals.
 plot.ci <- function(x.point, conf.int, width, col="black") {
   lines(x=c(x.point,x.point),y=conf.int,col=col)
@@ -313,6 +364,33 @@ longYear <- function(year){
   }
 
 }
+
+#' Open a file
+#'
+#' @param file_path
+#'
+#' @return
+#' @export
+#'
+#' @examples
+open_file <- function(file_path){
+
+  system2("open", normalizePath(file_path))
+
+}
+
+
+#' Check if x is a multiple of something
+#'
+#' @param x
+#' @param multiple
+#'
+#' @export
+#'
+is.multiple <- function(x, multiple){
+ round(x/multiple) == x/multiple
+}
+
 
 
 

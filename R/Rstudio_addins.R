@@ -25,6 +25,9 @@ open_webpage <- function(html_path){
     html_path <- gsub("\\.R", "\\.html", code_path)
     html_path <- gsub("/code/", "/pages/", html_path)
   }
+
+  # Escape special characters
+  html_path <- gsub("(\\(|\\))", "\\\\\\1", html_path)
   tryCatch(expr = { system2("open", html_path) },
            error = function(e){ system2("start", html_path) })
 }

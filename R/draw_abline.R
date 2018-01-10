@@ -68,6 +68,27 @@ draw.abline <- function(x_data,
 
 
 
+#' Fit princomp line
+#'
+#' Get the intercept and slope for the 1st principle component.
+#'
+#' @param x The x data
+#' @param y The y data
+#'
+#' @return Returns the intercept and slope.
+#' @export
+#'
+get_prcomp_abline <- function(x, y){
+
+  r <- prcomp(~ x + y)
+
+  slope     <- r$rotation[2,1] / r$rotation[1,1]
+  intercept <- r$center[2] - slope*r$center[1]
+
+  c(intercept, slope)
+
+}
+
 
 #' Function for drawing a linear regression through data
 #'
@@ -115,17 +136,6 @@ draw.princomp <- function(x_data,
   }
 
   # Now fit model
-  get_prcomp_abline <- function(x, y){
-
-    r <- prcomp(~ x + y)
-
-    slope     <- r$rotation[2,1] / r$rotation[1,1]
-    intercept <- r$center[2] - slope*r$center[1]
-
-    c(intercept, slope)
-
-  }
-
   get_y_predictions <- function(data, indices, x_fit_data){
 
     fit_pars <- get_prcomp_abline(x = data[indices,1],

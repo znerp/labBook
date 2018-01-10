@@ -6,9 +6,10 @@
 \usage{
 plot_titres(x_data, y_data, xlim = c(-1, 8), ylim = c(-1, 8), xlab = "",
   ylab = "", nd_titres = TRUE, princomp = FALSE, princomp_col = "red",
-  titre_class_means = FALSE, draw_eq_line = TRUE, lm = FALSE,
-  lm_col = "blue", fit_x_nd = !nd_titres, fit_y_nd = !nd_titres,
-  jitter = NA, x_jitter = jitter, y_jitter = jitter, title, ...)
+  titre_class_means = FALSE, log_axes_labels = TRUE, draw_eq_line = TRUE,
+  lm = FALSE, lm_col = "blue", fit_x_nd = !nd_titres,
+  fit_y_nd = !nd_titres, jitter = NA, x_jitter = jitter,
+  y_jitter = jitter, title, ...)
 }
 \arguments{
 \item{lm_col}{}

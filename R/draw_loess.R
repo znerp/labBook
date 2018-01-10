@@ -42,8 +42,8 @@ draw.loess <- function(x_data,
     # Try fitting the loess fit.
     fitted_values <- rep(NA, nrow(data))
     try(expr = {
-          #loess.fit     <- locfit(y_data~lp(x_data, nn = model_sp, h = model_bw, deg=model_dg))
-          loess.fit     <- loess(y_data~x_data, span = model_sp, degree = model_dg)
+          loess.fit     <- locfit(y_data~lp(x_data, nn = model_sp, h = model_bw, deg=model_dg))
+          #loess.fit     <- loess(y_data~x_data, span = model_sp, degree = model_dg)
           fitted_values <- predict(loess.fit, data.frame(x_data=x_prediction_values))
         })
 
