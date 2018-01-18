@@ -39,7 +39,7 @@ hist_stacked <- function(data,
          breaks = break_points,
          plot   = FALSE)$counts
   }))
-
+# blablabla
   # Now plot histogram
   for(n in 1:ncol(hist_counts)) {
 
